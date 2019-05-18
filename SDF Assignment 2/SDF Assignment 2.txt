@@ -1,0 +1,230 @@
+Q1. 
+#include <iostream>
+using namespace std;
+int day, month, year;
+class ElectricBill {
+public:
+  string name, address;
+  int billingMonth, billingAccount, amount;
+  struct dueDate{
+    int d;
+    int m;
+    int y;
+  }e;
+  ElectricBill(int month, int year) {
+    cout << "Name: "; cin >> name;
+    cout << "Address: "; cin >> address;
+    cout << "Billing Account: "; cin >> billingAccount;
+    billingMonth = month;
+    e.d = 3;
+    e.m = billingMonth + 1;
+    e.y = year;
+  }
+  int monthlyBill() {
+    amount = 5600;
+    return amount;
+  }
+  int panelty() {
+    int d, paneltyAmount;
+    d = day - 3;
+    if(d > 0) {
+      paneltyAmount = 20 * d;
+      return paneltyAmount;
+    }
+    else {
+      d = 0;
+      return d;
+    }
+  }
+  void display() {
+    cout << endl << endl << ":::ELECTRIC BILL:::" << endl;
+    cout << "Name: " << name << endl;
+    cout << "Address: " << address << endl;
+    cout << "Monthly Amount: " << monthlyBill() << endl;
+    cout << "Panelty: " << panelty() << endl;
+    cout << "Total amount: " << monthlyBill() + panelty() << endl;
+  }
+};
+int main() {
+  cout << "Enter current day, month and year seperated by a space: "; cin >> day >> month >> year;
+  ElectricBill c1(month, year);
+  c1.display();
+  return 0;
+}
+
+
+
+Q2.
+#include <iostream>
+using namespace std;
+class DB;
+class DM {
+  double m, cm;
+public:
+  friend void sum(DM, DB);
+  DM(int d_m = 0, int d_cm = 0) {
+    m = d_m;
+    cm = d_cm;
+  }
+  void final_DM() {
+    cout << "Distance in m and cm: " << m << "m  " << cm << "cmn";
+  }
+}DMresult;
+class DB {
+  double f, in;
+public:
+  friend void sum(DM, DB);
+  DB(int d_f = 0, int d_in = 0) {
+    f = d_f;
+    in = d_in;
+  }
+  void final_DB() {
+    cout << "Distance in f and in: " << f << "f  " << in << "inn";
+  }
+}DBresult;
+void sum(DM dm1, DB db1) {
+  double inch, centimeter; int feet, meter;
+  inch = (db1.f * 12) + (dm1.cm * 0.394) + (dm1.m * 39.37);
+  centimeter = (dm1.m * 100) + (db1.f * 30.48) + (db1.in * 2.54);
+  feet = inch/12; inch = inch - (feet*12);
+  meter = centimeter/100; centimeter = centimeter - (meter*100);
+  DMresult.m = meter; DMresult.cm = centimeter;
+  DBresult.f = feet; DBresult.in = inch;
+}
+int main() {
+  DB db(5, 4);
+  DM dm(2, 30);
+  sum(dm, db);
+  cout << "n:::Final Conversions:::nn";
+  DMresult.final_DM();
+  DBresult.final_DB();
+  return 0;
+}
+
+
+
+Q3.
+C++ has in its definition a way to represent sequence of characters as an object of class. This class is called std:: string.
+String class stores the characters as a sequence of bytes with a functionality of allowing access to single byte character.
+
+Program using overloaded == operator to compare two strings:-
+#include <iostream>
+using namespace std;
+class Strings {
+public:
+  string s1, s2;
+  void operator==(Strings &s) {
+    if(s1 == s2) {
+      cout << "\nBoth strings are equal.\n";
+    }
+    else {
+      cout << "\nBoth strings are not equal.\n";
+    }
+  }
+};
+int main() {
+  Strings s;
+  cout << "Enter string 1: "; cin >> s.s1;
+  cout << "Enter string 2: "; cin >> s.s2;
+  s.operator==(s);
+  return 0;
+}
+
+
+
+Q4.
+Y has no left child.
+
+
+
+Q5.
+#include <iostream>
+using namespace std;
+
+class Account {
+public:
+  string name;
+  int acc_no, balance;
+  char type;
+  Account() {
+    acc_no = 0;
+    balance = 0;
+  }
+  void deposit() {
+    int amount;
+    cout << "\nEnter amount to be deposited: "; cin >> amount;
+    balance += amount;
+    cout << "Account balance: " << balance << endl;
+  }
+  void withdraw() {
+    int amount;
+    cout << "\nEnter amount to be withdrawn: "; cin >> amount;
+    balance -= amount;
+    if(balance > 0) {
+      cout << "Account balance: " << balance << endl;
+    }
+    else {
+      cout << "Not sufficient balance in the account." << endl;
+      balance += amount;
+    }
+  }
+};
+class Cur_acct: public Account {
+public:
+  Cur_acct() {
+    type = 'c';
+    acc_no = 0;
+    balance = 0;
+  }
+  void panelty() {
+    if(balance < 2000) {
+      cout << "\nBalance below 2000, Therefore there will be a panelty fee of Rs 200 charged.\n";
+      balance -= 200;
+      cout << "Account balance: " << balance << endl;
+    }
+  }
+};
+class Sav_acct: public Account {
+public:
+  Sav_acct() {
+    type = 's';
+    acc_no = 0;
+    balance = 0;
+  }
+  void interest() {
+    int interest;
+    interest = 5 * (balance/100);
+    balance += interest;
+    cout << "\nInterest added: " << interest << endl;
+    cout << "Account balance: " << balance << endl;
+  }
+};
+void cur() {
+  Cur_acct c;
+  c.deposit();
+  c.withdraw();
+  c.panelty();
+}
+void sav() {
+  Sav_acct c;
+  c.deposit();
+  c.withdraw();
+  c.interest();
+}
+int main() {
+  int type;
+  cout << "\033[2J\033[1;1H";
+  cout << ":::MENU:::\n\n";
+  cout << "Choose type of account:-\n";
+  cout << "1. Current\n";
+  cout << "2. Saving\n";
+  cin >> type;
+  switch(type) {
+    case 1: cur(); break;
+    case 2: sav(); break;
+    default: cout << "Invalid Choice.\n";
+  }
+  return 0;
+}
+
+
